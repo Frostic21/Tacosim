@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Taco Clicker</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="container">
+    <div class="content">
+        <h1>Juan's Taco Truck</h1>
+        <div class="center">
+            <button id="taco">
+                <img src="https://openclipart.org/image/800px/337526"height=200px width=300px>
+            </button>
+        </div>
+        <br>
+        <h3 id="score">Money: $0</h3>
+        <br>
+        <div class="row">
+            <p id="mult">1 Taco Sold per Click</p>
+            <button id="shop">More Tacos: 10</button>
+            <p id="pfp">Taco Bonus: x1</p>
+            <button id="pfpbuy">Better Taco: 50000</button>
+            <div id="debug"></div>
+
+        </div>
+        <br>
+        <div class="center" id="total">Total Tacos Sold per Click: 1</div>
+    </div>
+</div>
+<script>
+    const debug = false;
+    if (debug) {
+        let button = document.createElement('button');
+        button.id = 'cheater'
+        button.textContent = 'Cheater';
+        document.getElementById('debug').appendChild(button);
+    }
+    let bonusCounter = 0;
+    let multiplier = 2;
+    let bonus=1;
+    let score=0;
+    let update = 1;
+    let shopRequirement= 10;
+    let randomButtonMashCounter = 0;
+    const taco = document.getElementById('taco');
+    const scoreList = document.getElementById('score');
+    const shop = document.getElementById('shop');
+    const mult = document.getElementById('mult');
+    const img = document.querySelector('img');
+    const pfp = document.getElementById('pfp');
+    const pfpbuy = document.getElementById('pfpbuy');
+    const totalTacos = document.getElementById('total');
+    const cheater = document.getElementById('cheater');
+
+
+    taco.addEventListener('click', function (e){
+        scoreUpdater();
+    })
+    shop.addEventListener('click', function (e){
+        buyShop();
+    })
+    pfpbuy.addEventListener('click', function (e){
+        bonusUpdater();
+    })
+    cheater.addEventListener('click', cheat);
+
+    function bonusUpdater(){
+        if(score>=50000){
+            if (bonusCounter >= 1){
+                if (score>=150000){
+                    if (bonusCounter >=2){
+                        if(score >=300000){
+                            if (bonusCounter >=3){
+                                randomButtonMashCounter = randomButtonMashCounter + 1;
+                            } else{
+                                bonusCounter = 3;
+                                score=0;
+                                multiplier= 7
+                                bonus=4;
+                                update=1;
+                                shopRequirement = 10;
+                                shop.textContent= `More Tacos: $${shopRequirement}`;
+                                mult.textContent= `${update} Tacos Sold per Click`;
+                                scoreList.textContent = `Money: ${score}`;
+                                pfp.textContent= `Taco Bonus x${bonus}`
+                                pfpbuy.textContent= `Maxed Out`
+                                img.src='https://www.thespruceeats.com/thmb/ses2M4uDBQ-Sk3RUoHqj1a8aXuY=/750x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/chicken-tinga-tinga-de-pollo-4773239-Hero_01-1bd1d960c02a4fdb812323b8c60fd55b.jpg';
+                                totalTacos.textContent= `Total Tacos Sold per Click: ${update * bonus}`;
+                            }
+                        }
+                    } else{
+                        bonusCounter =2;
+                        score=0;
+                        multiplier= 4
+                        bonus=3;
+                        update=1;
+                        shopRequirement = 10;
+                        shop.textContent= `More Tacos: ${shopRequirement}`;
+                        mult.textContent= `${update} Tacos Sold per Click`;
+                        scoreList.textContent = `Tacos: ${score}`;
+                        pfp.textContent= `Taco Bonus x${bonus}`
+                        pfpbuy.textContent= `Better Taco: 300,000`
+                        img.src='https://images5.alphacoders.com/426/426050.jpg';
+                        totalTacos.textContent= `Total Tacos Sold per Click: ${update * bonus}`;
+                    }
+                }
+            } else{
+                bonusCounter =1;
+                score= 0;
+                multiplier= 3
+                bonus=2;
+                update=1;
+                shopRequirement = 10;
+                shop.textContent= `More Tacos: ${shopRequirement}`;
+                mult.textContent= `${update} Tacos Sold per Click`;
+                scoreList.textContent = `Money: ${score}`;
+                pfp.textContent= `Taco Bonus x${bonus}`
+                pfpbuy.textContent= `Better Taco: 150,000`
+                img.src='https://t1.gstatic.com/licensed-image?q=tbn:ANd9GcR8cwEvC4A6CutRrMu2vXyQxuAvoUzEdeo34TZH2E6tjxX3yAeKJaBU_Ib5yFpgtpoA';
+                totalTacos.textContent= `Total Tacos Sold per Click: ${update * bonus}`;
+            }
+        }
+    }
+
+    function scoreUpdater() {
+        score = score+ (update * bonus);
+        scoreList.textContent = `Money: ${score}`;
+    }
+    function buyShop(){
+        if (score>= shopRequirement){
+            update= update*2;
+            score= score-shopRequirement;
+            shopRequirement= shopRequirement * multiplier;
+            scoreList.textContent = `Money: ${score}`;
+            shop.textContent= `More Tacos: ${shopRequirement}`;
+            mult.textContent= `${update} Tacos Sold per Click`;
+            totalTacos.textContent= `Total Tacos Sold per Click: ${update * bonus}`;
+        }
+    }
+    function cheat(){
+        score+=9e+999999999999999999999999999999;
+        scoreUpdater();
+    }
+</script>
+</body>
+</html>
