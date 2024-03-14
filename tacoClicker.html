@@ -23,25 +23,35 @@
             <p id="pfp">Taco Bonus: x1</p>
             <button id="pfpbuy">Better Taco: 50000</button>
             <div id="debug"></div>
-
+        </div>
+        <br>
+        <div class="center">
+            <div class="row">
+                <p id="auto">Tacos Sold per Second: 0</p>
+                <button id="buyAuto">Buy Taco Machine: $5000</button>
+            </div>
         </div>
         <br>
         <div class="center" id="total">Total Tacos Sold per Click: 1</div>
     </div>
 </div>
 <script>
-    const debug = false;
+    const debug = true;
     if (debug) {
         let button = document.createElement('button');
         button.id = 'cheater'
         button.textContent = 'Cheater';
         document.getElementById('debug').appendChild(button);
     }
+    let autoUpdate = 1;
+    let autobuythingy=0
+    let autoTaco = 0;
     let bonusCounter = 0;
     let multiplier = 2;
     let bonus=1;
     let score=0;
     let update = 1;
+    let autoRequirement= 5000;
     let shopRequirement= 10;
     let randomButtonMashCounter = 0;
     const taco = document.getElementById('taco');
@@ -53,18 +63,43 @@
     const pfpbuy = document.getElementById('pfpbuy');
     const totalTacos = document.getElementById('total');
     const cheater = document.getElementById('cheater');
+    const automatic= document.getElementById('auto');
+    const buyAuto = document.getElementById('buyAuto');
 
-
-    taco.addEventListener('click', function (e){
-        scoreUpdater();
-    })
-    shop.addEventListener('click', function (e){
-        buyShop();
-    })
-    pfpbuy.addEventListener('click', function (e){
-        bonusUpdater();
-    })
+    buyAuto.addEventListener('click', automaticTacoMaker);
+    taco.addEventListener('click', scoreUpdater)
+    shop.addEventListener('click', buyShop)
+    pfpbuy.addEventListener('click', bonusUpdater)
     cheater.addEventListener('click', cheat);
+
+    function myTimer() {
+        score = score + (autoUpdate * bonus);
+        scoreList.textContent = `Money: $${score}`;
+    }
+
+
+    function automaticTacoMaker(){
+        if (autobuythingy >=1){
+            if(score >= autoRequirement){
+                score = score-autoRequirement;
+                autoRequirement = autoRequirement * 3;
+                autoUpdate = autoUpdate + 1;
+                buyAuto.textContent = `Buy Taco Machine: $${autoRequirement}`;
+                scoreList.textContent = `Money: $${score}`;
+                automatic.textContent = `Tacos Sold per Second: ${autoUpdate}`;
+            }
+        } else{
+            if(score >= autoRequirement){
+                score = score-autoRequirement;
+                autoRequirement = autoRequirement * 3
+                autobuythingy= autobuythingy+1
+                setInterval(myTimer, 1000);
+                buyAuto.textContent = `Buy Taco Machine: $${autoRequirement}`;
+                scoreList.textContent = `Money: $${score}`;
+                automatic.textContent = `Tacos Sold per Second: ${autoUpdate}`;
+            }
+        }
+    }
 
     function bonusUpdater(){
         if(score>=50000){
@@ -99,7 +134,7 @@
                         shopRequirement = 10;
                         shop.textContent= `More Tacos: ${shopRequirement}`;
                         mult.textContent= `${update} Tacos Sold per Click`;
-                        scoreList.textContent = `Tacos: ${score}`;
+                        scoreList.textContent = `Money: $${score}`;
                         pfp.textContent= `Taco Bonus x${bonus}`
                         pfpbuy.textContent= `Better Taco: 300,000`
                         img.src='https://images5.alphacoders.com/426/426050.jpg';
@@ -126,21 +161,21 @@
 
     function scoreUpdater() {
         score = score+ (update * bonus);
-        scoreList.textContent = `Money: ${score}`;
+        scoreList.textContent = `Money: $${score}`;
     }
     function buyShop(){
         if (score>= shopRequirement){
             update= update*2;
             score= score-shopRequirement;
             shopRequirement= shopRequirement * multiplier;
-            scoreList.textContent = `Money: ${score}`;
+            scoreList.textContent = `Money: $${score}`;
             shop.textContent= `More Tacos: ${shopRequirement}`;
             mult.textContent= `${update} Tacos Sold per Click`;
             totalTacos.textContent= `Total Tacos Sold per Click: ${update * bonus}`;
         }
     }
     function cheat(){
-        score+=9e+999999999999999999999999999999;
+        score+= 5000;
         scoreUpdater();
     }
 </script>
