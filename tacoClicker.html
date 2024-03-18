@@ -48,6 +48,7 @@
         button.textContent = 'Cheater';
         document.getElementById('debug').appendChild(button);
     }
+    let counter = 0;
     let payTax = 0.5;
     let taxMaxCounter= 60;
     let autoUpdate = 1000;
@@ -61,7 +62,9 @@
     let shopRequirement= 10;
     let randomButtonMashCounter = 0;
     let taxTimerConst;
+    let taxPopup;
     let autoUpdateConst;
+    let button1;
     const taco = document.getElementById('taco');
     const scoreList = document.getElementById('score');
     const shop = document.getElementById('shop');
@@ -81,42 +84,6 @@
     pfpbuy.addEventListener('click', bonusUpdater);
     cheater.addEventListener('click', cheat);
 
-
-    function myTimer() {
-        score = score + (autoUpdate * bonus);
-        scoreList.textContent = `Money: $${score}`;
-    }
-
-    function payTaxesOrYourPoor(){
-        score = score * payTax;
-        clearInterval(taxTimerConst);
-        scoreList.textContent = `Money: $${score}`;
-        taxes.textContent = `Hooray no more taxes!!!`;
-
-    }
-
-    function automaticTacoMaker(){
-        if (autobuythingy >=1){
-            if(score >= autoRequirement){
-                score = score-autoRequirement;
-                autoRequirement = autoRequirement * 3;
-                autoUpdate = autoUpdate * 2;
-                buyAuto.textContent = `Buy Taco Machine: $${autoRequirement}`;
-                scoreList.textContent = `Money: $${score}`;
-                automatic.textContent = `Tacos Sold per Second: ${autoUpdate}`;
-            }
-        } else{
-            if(score >= autoRequirement){
-                score = score-autoRequirement;
-                autoRequirement = autoRequirement * 3
-                autobuythingy= autobuythingy+1;
-                autoUpdateConst = setInterval(myTimer, 1000);
-                buyAuto.textContent = `Buy Taco Machine: $${autoRequirement}`;
-                scoreList.textContent = `Money: $${score}`;
-                automatic.textContent = `Tacos Sold per Second: ${autoUpdate}`;
-            }
-        }
-    }
 
     function bonusUpdater(){
         if(score>=50000){
@@ -176,9 +143,9 @@
                 if(autobuythingy >= 1){
                     taxes.textContent = `Your taxes are due in ${taxMaxCounter} seconds.`;
                     taxTimerConst = setInterval(taxTimer, 1000);
-                    let button1 = document.createElement('button');
+                    button1 = document.createElement('button');
                     button1.id = 'howToPayTaxes'
-                    button1.textContent = 'Pay Taxes (50% of you score)';
+                    button1.textContent = 'Pay Taxes (100k required to pay)';
                     document.getElementById('randomStuff').appendChild(button1);
 
                     const payTaxes = document.getElementById('howToPayTaxes');
@@ -211,8 +178,10 @@
             shop.textContent= `More Tacos: ${shopRequirement}`;
             mult.textContent= `${update} Tacos Sold per Click`;
             automatic.textContent = `Tacos Sold per Second: ${autoUpdate}`;
-            pfpbuy.textContent= `Better Taco: ${autoRequirement}`;
+            pfpbuy.textContent= `Better Taco: 50,000`;
             buyAuto.textContent = `Buy Taco Machine: $${autoRequirement}`;
+            taxes.textContent = 'Uh Oh :('
+            button1.remove();
         }
     }
 
@@ -234,6 +203,55 @@
     function cheat(){
         score+= 5000;
         scoreUpdater();
+    }
+    function myTimer() {
+        score = score + (autoUpdate * bonus);
+        scoreList.textContent = `Money: $${score}`;
+    }
+
+    function payTaxesOrYourPoor(){
+        if (score >= 100000){
+            score = score * payTax;
+            clearInterval(taxTimerConst);
+            scoreList.textContent = `Money: $${score}`;
+            taxes.textContent = `Hooray no more taxes!!!`;
+            button1.remove();
+        } else{
+            taxPopup = setInterval(taxPopUpThingy, 500)
+        }
+
+    }
+    function taxPopUpThingy(){
+        button1.textContent = `Not Enough Money :(`;
+        counter++;
+        if (counter >= 2){
+            clearInterval(taxPopup);
+            counter = 0;
+            button1.textContent = `'Pay Taxes (100k required to pay)'`;
+        }
+    }
+
+    function automaticTacoMaker(){
+        if (autobuythingy >=1){
+            if(score >= autoRequirement){
+                score = score-autoRequirement;
+                autoRequirement = autoRequirement * 3;
+                autoUpdate = autoUpdate * 2;
+                buyAuto.textContent = `Buy Taco Machine: $${autoRequirement}`;
+                scoreList.textContent = `Money: $${score}`;
+                automatic.textContent = `Tacos Sold per Second: ${autoUpdate}`;
+            }
+        } else{
+            if(score >= autoRequirement){
+                score = score-autoRequirement;
+                autoRequirement = autoRequirement * 3
+                autobuythingy= autobuythingy+1;
+                autoUpdateConst = setInterval(myTimer, 1000);
+                buyAuto.textContent = `Buy Taco Machine: $${autoRequirement}`;
+                scoreList.textContent = `Money: $${score}`;
+                automatic.textContent = `Tacos Sold per Second: ${autoUpdate}`;
+            }
+        }
     }
 </script>
 </body>
