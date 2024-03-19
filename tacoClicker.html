@@ -10,7 +10,7 @@
     <div class="content">
         <h1>Juan's Taco Truck</h1>
         <div class="center">
-            <button id="taco">
+            <button class="colorButton" id="taco">
                 <img alt="Theres supposed to be a taco here." src="https://openclipart.org/image/800px/337526" height=200px width=300px>
             </button>
         </div>
@@ -24,16 +24,16 @@
         <br>
         <div class="row">
             <p id="mult">1 Taco Sold per Click</p>
-            <button id="shop">More Tacos: 10</button>
+            <button class="colorButton" id="shop">More Tacos: 10</button>
             <p id="pfp">Taco Bonus: x1</p>
-            <button id="pfpbuy">Better Taco: 50000</button>
+            <button class="colorButton" id="pfpbuy">Better Taco: 50000</button>
             <div id="debug"></div>
         </div>
         <br>
         <div class="center">
             <div class="row">
                 <p id="auto">Tacos Sold per Second: 0</p>
-                <button id="buyAuto">Buy Taco Machine: $5000</button>
+                <button class="colorButton" id="buyAuto">Buy Taco Machine: $5000</button>
             </div>
         </div>
         <br>
@@ -45,16 +45,15 @@
     if (debug) {
         let button = document.createElement('button');
         button.id = 'cheater'
+        button.className = 'colorButton'
         button.textContent = 'Cheater';
         document.getElementById('debug').appendChild(button);
     }
     let counter = 0;
-    let payTax = 0.5;
     let taxMaxCounter= 60;
     let autoUpdate = 1000;
     let autobuythingy=0;
     let bonusCounter = 0;
-    let multiplier = 2;
     let bonus=1;
     let score=0;
     let update = 1;
@@ -65,6 +64,7 @@
     let taxPopup;
     let autoUpdateConst;
     let button1;
+    let payTaxes;
     const taco = document.getElementById('taco');
     const scoreList = document.getElementById('score');
     const shop = document.getElementById('shop');
@@ -96,7 +96,6 @@
                             } else{
                                 bonusCounter = 3;
                                 score=0;
-                                multiplier= 7
                                 bonus=4;
                                 update=1;
                                 shopRequirement = 10;
@@ -112,7 +111,6 @@
                     } else{
                         bonusCounter =2;
                         score=0;
-                        multiplier= 4
                         bonus=3;
                         update=1;
                         shopRequirement = 10;
@@ -129,7 +127,6 @@
                 bonusCounter =1;
                 autobuythingy = 1;
                 score= 0;
-                multiplier= 3
                 bonus=2;
                 update=1;
                 shopRequirement = 10;
@@ -141,14 +138,16 @@
                 img.src='https://t1.gstatic.com/licensed-image?q=tbn:ANd9GcR8cwEvC4A6CutRrMu2vXyQxuAvoUzEdeo34TZH2E6tjxX3yAeKJaBU_Ib5yFpgtpoA';
                 totalTacos.textContent= `Total Tacos Sold per Click: ${update * bonus}`;
                 if(autobuythingy >= 1){
+                    taxMaxCounter = 60;
                     taxes.textContent = `Your taxes are due in ${taxMaxCounter} seconds.`;
                     taxTimerConst = setInterval(taxTimer, 1000);
                     button1 = document.createElement('button');
                     button1.id = 'howToPayTaxes'
+                    button1.className= 'colorButton'
                     button1.textContent = 'Pay Taxes (100k required to pay)';
                     document.getElementById('randomStuff').appendChild(button1);
 
-                    const payTaxes = document.getElementById('howToPayTaxes');
+                    payTaxes = document.getElementById('howToPayTaxes');
                     payTaxes.addEventListener('click', payTaxesOrYourPoor);
                 }
             }
@@ -166,7 +165,6 @@
             autoUpdate = 1000;
             autobuythingy=0;
             bonusCounter = 0;
-            multiplier = 2;
             bonus=1;
             score=0;
             update = 1;
@@ -194,7 +192,7 @@
         if (score>= shopRequirement){
             update= update*2;
             score= score-shopRequirement;
-            shopRequirement= shopRequirement * multiplier;
+            shopRequirement= shopRequirement * 2;
             scoreList.textContent = `Money: $${score}`;
             shop.textContent= `More Tacos: ${shopRequirement}`;
             mult.textContent= `${update} Tacos Sold per Click`;
@@ -212,13 +210,13 @@
 
     function payTaxesOrYourPoor(){
         if (score >= 100000){
-            score = score * payTax;
+            score = score / 2;
             clearInterval(taxTimerConst);
             scoreList.textContent = `Money: $${score}`;
             taxes.textContent = `Hooray no more taxes!!!`;
             button1.remove();
         } else{
-            taxPopup = setInterval(taxPopUpThingy, 500)
+            taxPopup = setInterval(taxPopUpThingy, 1000)
         }
 
     }
